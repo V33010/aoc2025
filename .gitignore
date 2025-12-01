@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Advent of Code specific
+# Uncomment if you don't want to commit your actual puzzle inputs
+# input_main.txt
+
+# Keep test inputs for reference
+# input_test.txt can stay committed
+
+# Logs and temp files
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
