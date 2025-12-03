@@ -55,11 +55,9 @@ def solve_part1(text_in):
 
 
 def check_symmetric_part2(num_str: str):
-    # Order must be 7,5,3,2 to match Go
     repeat_counts = [7, 5, 3, 2]
 
     for count in repeat_counts:
-        # Check same as Go: string length divisible by repeat count
         if len(num_str) % count == 0:
             slicer = len(num_str) // count
             control = num_str[:slicer]
