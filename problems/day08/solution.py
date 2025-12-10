@@ -98,9 +98,12 @@ def solve_part2(text_in):
         pair_checked.append(merging_pair_current)
 
         if len(circuit_list) == 1:
+            # since len(circuit_list) == 1, it has only 1 element which is circuit_list[0]
             test_circuit = circuit_list[0]
             if check_all_boxes(boxes, test_circuit):
-                pass
+                # reach here only if test_circuit contains all boxes provided
+                # so the junction_pair added in this step causes the circuit to contain all boxes
+
                 # print(f"Current len(sorted_distances): {len(sorted_distances)}")
                 # print(merging_pair_current)
                 #
