@@ -34,7 +34,6 @@ class DevicePath:
     def __init__(self, node: Node):
 
         self.path = [node]
-        # self.path.append(node)
 
         self.head = node
         self.tail = node
@@ -64,28 +63,36 @@ def test_paths(paths):
     return True
 
 
-def get_valid_paths_dfs(nodes_list: list[Node]) -> list[DevicePath]:
+def get_valid_paths_dfs(
+    nodes_list: list[Node], start_name: str, end_name: str
+) -> list[DevicePath]:
     nodes_map = {node.self_name: node for node in nodes_list}
 
-    start_node = nodes_map.get("you")
+    start_node = nodes_map.get(start_name)
     if not start_node:
         return []
 
     queue: list[DevicePath] = [DevicePath(start_node)]
 
     valid_paths: list[DevicePath] = []
+    tested = []
 
     while queue:
+
+        # print(len(queue))
         current_path = queue.pop(0)
+        if current_path in tested:
+            continue
+        tested.append(current_path)
 
         current_node = current_path.tail
 
         for child_name in current_node.children_names:
 
             # SUCCESS CONDITION
-            if child_name == "out":
+            if child_name == end_name:
                 valid_paths.append(current_path)
-                continue  # Do not continue exploring this path branch
+                continue
 
             child_node = nodes_map.get(child_name)
 
@@ -103,35 +110,6 @@ def get_valid_paths_dfs(nodes_list: list[Node]) -> list[DevicePath]:
                 queue.append(new_path)
 
     return valid_paths
-
-
-#
-# def get_valid_paths_dfs(nodes_list: list[Node]) -> list[DevicePath]:
-#     paths: list[DevicePath] = []
-#     for node_item in nodes_list:
-#         if not node_item.next_exists:
-#             paths.append(DevicePath(node_item))
-#
-#     print(f"starting dfs with paths: {paths}")
-#     valid = []
-#     while paths:
-#         print(f"len(paths): {len(paths)}")
-#         current_path = paths.pop(0)
-#         # print(f"\ncurrent_path: {current_path}")
-#         current_path_end_name = current_path.tail.self_name
-#         if current_path_end_name == "you":
-#             valid.append(current_path)
-#             continue
-#         for item in nodes_list:
-#             if (
-#                 current_path_end_name in item.children_names
-#             ) and not current_path.test_node(item):
-#                 new_path = copy(current_path)
-#                 new_path.path = current_path.path[:]
-#                 new_path.add_node(item)
-#                 paths.append(new_path)
-#
-#     return valid
 
 
 def parse_item(text_item: str):
@@ -155,8 +133,45 @@ def parse_input(text_in):
 def solve_part1(text_in):
     nodes_list = parse_input(text_in)
     # print(nodes_list)
-    valid_paths = get_valid_paths_dfs(nodes_list)
+    valid_paths = get_valid_paths_dfs(nodes_list, "you", "out")
     return len(valid_paths)
+
+
+def solve_part2(text_in):
+    nodes_list = parse_input(text_in)
+    print(f"getting dac2fft")
+    dac2fft = get_valid_paths_dfs(nodes_list, "dac", "fft")
+    print(f"len(dac2fft): {len(dac2fft)}")
+    print()
+
+    print(f"getting dac2out")
+    dac2out = get_valid_paths_dfs(nodes_list, "dac", "out")
+    print(f"len(dac2out): {len(dac2out)}")
+    print()
+
+    print(f"getting svr2dac")
+    svr2dac = get_valid_paths_dfs(nodes_list, "svr", "dac")
+    print(f"len(svr2dac): {len(svr2dac)}")
+    print()
+
+    print("getting svr2fft")
+    svr2fft = get_valid_paths_dfs(nodes_list, "svr", "fft")
+    print(f"len(svr2fft): {len(svr2fft)}")
+    print()
+
+    print("getting fft2dac")
+    fft2dac = get_valid_paths_dfs(nodes_list, "fft", "dac")
+    print(f"len(fft2dac): {len(fft2dac)}")
+    print()
+
+    print("getting fft2out")
+    fft2out = get_valid_paths_dfs(nodes_list, "fft", "out")
+    print(f"len(fft2out): {len(fft2out)}")
+    print()
+
+    output = len(svr2fft) * len(fft2dac) * len(dac2out)
+
+    return output
 
 
 @aoc_script
@@ -165,6 +180,8 @@ def main(file: str = ""):
     # print(text_in)
     part1 = solve_part1(text_in)
     print(f"part1: {part1}")
+    part2 = solve_part2(text_in)
+    print(f"part2: {part2}")
 
 
 if __name__ == "__main__":
