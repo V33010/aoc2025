@@ -78,8 +78,8 @@ def get_valid_paths_dfs(
     tested = []
 
     while queue:
+        print(f"len(valid_paths): {len(valid_paths)}")
 
-        # print(len(queue))
         current_path = queue.pop(0)
         if current_path in tested:
             continue
@@ -180,8 +180,9 @@ def main(file: str = ""):
     # print(text_in)
     part1 = solve_part1(text_in)
     print(f"part1: {part1}")
-    part2 = solve_part2(text_in)
-    print(f"part2: {part2}")
+    # part2 = solve_part2(text_in)
+    # print(f"part2: {part2}")
+    #
 
 
 if __name__ == "__main__":
