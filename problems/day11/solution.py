@@ -12,7 +12,7 @@ class Node:
     def __init__(self, self_name, children_names):
         self.self_name = self_name
         self.children_names = children_names
-        self.next_exists = False if "out" in children_names else True
+        self.next_exists = False if "out" in children_names else True  # ["out", "xyz"]
 
     def __str__(self) -> str:
         return f"self_name: {self.self_name}, children_names: {self.children_names}, next_exists: {self.next_exists}"
@@ -63,6 +63,80 @@ def test_paths(paths):
     return True
 
 
+# NOT MY CODE
+####################################################################################
+# def get_path_counts_dfs(nodes_list: list[Node], start_name: str, end_name: str):
+#     nodes_map = {node.self_name: node for node in nodes_list}
+#     cache = {}
+#
+#     def dfs(node: Node) -> int:
+#         if node.self_name == end_name:
+#             return 1
+#
+#         if node.self_name in cache:
+#             return cache[node.self_name]
+#
+#         total = 0
+#         for child_name in node.children_names:
+#             if child_name == end_name:
+#                 total += 1
+#             else:
+#                 child = nodes_map.get(child_name)
+#                 if child:
+#                     total += dfs(child)
+#
+#         cache[node.self_name] = total
+#         return total
+#
+#     start_node = nodes_map.get(start_name)
+#     if not start_node:
+#         return 0
+#
+#     return dfs(start_node)
+########################################################################################
+
+#
+# def get_path_counts_dfs(nodes_list: list[Node], start_name: str, end_name: str) -> int:
+#     nodes_map = {node.self_name: node for node in nodes_list}
+#     start_node = nodes_map.get(start_name)
+#     if not start_node:
+#         return 0
+#     dfs_queue = [DevicePath(start_node)]
+#     valid_nodes = []
+#     count = 0
+#     while dfs_queue:
+#         current_path = dfs_queue.pop(0)
+#         current_node = current_path.tail
+#         if current_node in valid_nodes:
+#             count += 1
+#             continue
+#
+#         for child_name in current_node.children_names:
+#
+#             # SUCCESS CONDITION
+#             if child_name == end_name:
+#                 for node in current_path.path:
+#                     valid_nodes.append(node)
+#                 continue
+#
+#             child_node = nodes_map.get(child_name)
+#             if child_node:
+#                 # loop prevention
+#                 for path_node in current_path.path:
+#                     if child_node.self_name == path_node.self_name:
+#                         continue
+#
+#                 new_path = copy(current_path)
+#
+#                 new_path.path = current_path.path[:]
+#
+#                 new_path.add_node(child_node)
+#                 dfs_queue.append(new_path)
+#
+#     return count
+#
+
+
 def get_valid_paths_dfs(
     nodes_list: list[Node], start_name: str, end_name: str
 ) -> list[DevicePath]:
@@ -98,8 +172,8 @@ def get_valid_paths_dfs(
 
             if child_node:
                 # loop prevention
-                for item in current_path.path:
-                    if child_node.self_name == item.self_name:
+                for path_node in current_path.path:
+                    if child_node.self_name == path_node.self_name:
                         continue
 
                 new_path = copy(current_path)
@@ -133,43 +207,51 @@ def parse_input(text_in):
 def solve_part1(text_in):
     nodes_list = parse_input(text_in)
     # print(nodes_list)
-    valid_paths = get_valid_paths_dfs(nodes_list, "you", "out")
-    return len(valid_paths)
+    # valid_paths = get_valid_paths_dfs(nodes_list, "you", "out")
+    # return len(valid_paths)
+    path_counts = get_path_counts_dfs(nodes_list, "you", "out")
+    return path_counts
 
 
 def solve_part2(text_in):
     nodes_list = parse_input(text_in)
     print(f"getting dac2fft")
-    dac2fft = get_valid_paths_dfs(nodes_list, "dac", "fft")
-    print(f"len(dac2fft): {len(dac2fft)}")
+    # dac2fft = get_valid_paths_dfs(nodes_list, "dac", "fft")
+    dac2fft = get_path_counts_dfs(nodes_list, "dac", "fft")
+    print(f"len(dac2fft): {(dac2fft)}")
     print()
 
     print(f"getting dac2out")
-    dac2out = get_valid_paths_dfs(nodes_list, "dac", "out")
-    print(f"len(dac2out): {len(dac2out)}")
+    # dac2out = get_valid_paths_dfs(nodes_list, "dac", "out")
+    dac2out = get_path_counts_dfs(nodes_list, "dac", "out")
+    print(f"len(dac2out): {(dac2out)}")
     print()
 
     print(f"getting svr2dac")
-    svr2dac = get_valid_paths_dfs(nodes_list, "svr", "dac")
-    print(f"len(svr2dac): {len(svr2dac)}")
+    # svr2dac = get_valid_paths_dfs(nodes_list, "svr", "dac")
+    svr2dac = get_path_counts_dfs(nodes_list, "svr", "dac")
+    print(f"len(svr2dac): {(svr2dac)}")
     print()
 
     print("getting svr2fft")
-    svr2fft = get_valid_paths_dfs(nodes_list, "svr", "fft")
-    print(f"len(svr2fft): {len(svr2fft)}")
+    # svr2fft = get_valid_paths_dfs(nodes_list, "svr", "fft")
+    svr2fft = get_path_counts_dfs(nodes_list, "svr", "fft")
+    print(f"len(svr2fft): {(svr2fft)}")
     print()
 
     print("getting fft2dac")
-    fft2dac = get_valid_paths_dfs(nodes_list, "fft", "dac")
-    print(f"len(fft2dac): {len(fft2dac)}")
+    # fft2dac = get_valid_paths_dfs(nodes_list, "fft", "dac")
+    fft2dac = get_path_counts_dfs(nodes_list, "fft", "dac")
+    print(f"len(fft2dac): {(fft2dac)}")
     print()
 
     print("getting fft2out")
-    fft2out = get_valid_paths_dfs(nodes_list, "fft", "out")
-    print(f"len(fft2out): {len(fft2out)}")
+    # fft2out = get_valid_paths_dfs(nodes_list, "fft", "out")
+    fft2out = get_path_counts_dfs(nodes_list, "fft", "out")
+    print(f"len(fft2out): {(fft2out)}")
     print()
 
-    output = len(svr2fft) * len(fft2dac) * len(dac2out)
+    output = (svr2fft) * (fft2dac) * (dac2out)
 
     return output
 
@@ -180,8 +262,8 @@ def main(file: str = ""):
     # print(text_in)
     part1 = solve_part1(text_in)
     print(f"part1: {part1}")
-    # part2 = solve_part2(text_in)
-    # print(f"part2: {part2}")
+    part2 = solve_part2(text_in)
+    print(f"part2: {part2}")
     #
 
 
